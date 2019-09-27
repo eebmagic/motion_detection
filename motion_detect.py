@@ -1,17 +1,8 @@
-'''
- LOGIC OUTLINE:
-
-    make average of each pixel from frame
-    abs-subtract of current from average pixel-by-pixel frame
-    sum of difference from average frame values
-
-    test for threshold
-
-'''
 import cv2
 import os
 import sys
 import numpy as np
+import time
 
 ########################################################################
 # SETTINGS #
@@ -27,6 +18,7 @@ THRESHOLD = 100
 
 ########################################################################
 
+
 def format_frame(inputFrame):
     # Convert to grayscale
     gray = cv2.cvtColor(inputFrame, cv2.COLOR_BGR2GRAY)
@@ -34,18 +26,17 @@ def format_frame(inputFrame):
     # Return cropped frame
     # Sidewalk
     # return gray[480:-150, 300:-350]
-    
+
     # Street (No Parked Car)
-    return gray[0:-650, 455:-560]
-    
+    # return gray[0:-650, 455:-560]
+
     # Streen and sidewalk (NO TREES)
-    # return gray[0:-150, 450:-560]
+    return gray[0:-150, 450:-560]
 
 
 # Start of main
 
 cap = cv2.VideoCapture(0)
-import time
 time.sleep(1)
 start_frame = format_frame(cap.read()[1])
 print("First Frame:")
@@ -78,7 +69,7 @@ while(cv2.waitKey(1) & 0xFF != ord('q')):
     counter += 1
     SUM_FRAME = np.add(SUM_FRAME, frame)
     AVG_FRAME = (SUM_FRAME / counter).astype(np.uint8)
-    
+
     # Display the resulting frame
     if SHOW_REAL_VIDEO:
         cv2.imshow("Frame", frame)
